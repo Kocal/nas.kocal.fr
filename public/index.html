@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>NAS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100dvh;
+        }
+
+        body {
+            background: radial-gradient(circle, rgba(47, 47, 47, 0.92), rgba(9, 9, 9, 0.92)),
+            url(./assets/noise.webp) center/cover;
+        }
+
+        #main {
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .card {
+            --size: 200px;
+            --bg-color: var(--color);
+            --glow-color: color-mix(in srgb, var(--color), #fff 2%);
+            --border-size: 4px;
+            --border-color: color-mix(in srgb, var(--color), #fff 5%);
+            --btn-height: 40px;
+            --btn-radius: 15px;
+            --hover-duration: .150s;
+            --press-duration: .05s;
+
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            width: var(--size);
+            height: calc(var(--size) - var(--btn-height));
+            border-radius: var(--btn-radius);
+            box-shadow: 0 0 1px color-mix(in srgb, var(--color), #000 50%), inset 0 0 0 var(--border-size) var(--border-color);
+            transition: transform var(--press-duration) ease-in-out, background-color var(--hover-duration) ease-in-out;
+
+            &:before {
+                display: block;
+                position: absolute;
+                content: ' ';
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: calc(-1 * var(--btn-height));
+                z-index: -1;
+                border-radius: var(--btn-radius);
+                background: linear-gradient(to bottom, var(--bg-color) 75%, color-mix(in srgb, var(--bg-color), #000 15%) 100%);
+                transition: top var(--press-duration) ease-in-out, bottom var(--press-duration) ease-in-out;
+            }
+
+            > img {
+                user-select: none;
+                max-width: 100%;
+                height: calc(var(--size) - var(--btn-height) - 48px);
+                opacity: .4;
+                transition: all var(--hover-duration) ease-in-out;
+            }
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--bg-color), #fff 3%);
+
+                > img {
+                    opacity: .95;
+                }
+            }
+
+            &:active {
+                transform: translateY( calc(var(--btn-height) + (var(--border-size) / 2)) );
+
+                &:before {
+                    top: 100%;
+                    bottom: 0;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main id="main">
+    <a href="https://connect.myunraid.net" class="card" title="MyUnraid.net" style="--color: #cc5732">
+        <img src="./assets/unraid.svg" alt="" width="100" height="72" />
+    </a>
+
+    <a href="https://media-center.kocal.fr" class="card" title="Media Center" style="--color: #1F1F1F">
+        <img src="./assets/media-center.svg" alt="" width="60" height="100" />
+    </a>
+
+    <a href="https://seedbox.kocal.fr" class="card" title="Seedbox" style="--color: #2B3340">
+        <img src="./assets/torrent.svg" alt="" width="100" height="100" />
+    </a>
+
+    <a href="https://monitoring.kocal.fr" class="card" title="Monitoring" style="--color: #E5883E">
+        <img src="./assets/monitoring.svg" alt="" width="100" height="109" />
+    </a>
+</main>
+
+<script>
+    for (const card of document.querySelectorAll('.card')) {
+        card.addEventListener('mouseover', function() {
+            card.classList.add('hover');
+        })
+
+        card.addEventListener('mousemove', function(e) {
+            card.style.setProperty('--mouse-x', `${e.clientX - card.offsetLeft}px`);
+            card.style.setProperty('--mouse-y', `${e.clientY - card.offsetTop}px`);
+        })
+
+        card.addEventListener('mouseout', function() {
+            card.classList.remove('hover');
+        });
+    }
+</script>
+</body>
+</html>
